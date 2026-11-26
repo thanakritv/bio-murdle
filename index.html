@@ -1,0 +1,2188 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bio-Murdle: เกมปริศนาตารางอนุมานชีวเคมี (Neurotransmitters)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Sarabun:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f2eb;
+      --surface: #ffffff;
+      --surface-subtle: #faf8f4;
+      --surface-warm: #f0ece1;
+      --ink: #182230;
+      --ink-secondary: #475467;
+      --muted: #667085;
+      --border: #d6d1c4;
+      --border-strong: #1e293b;
+      --brand: #0f5c6e;
+      --brand-hover: #0b4756;
+      --brand-soft: #e6f2f5;
+      --brand-ink: #ffffff;
+      --danger: #b42318;
+      --danger-soft: #fef3f2;
+      --success: #067647;
+      --success-soft: #ecfdf3;
+      --warning: #b54708;
+      --warning-soft: #fffaeb;
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(24, 34, 48, 0.06);
+      --shadow: 0 2px 8px rgba(24, 34, 48, 0.07), 0 1px 2px rgba(24, 34, 48, 0.05);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --font-heading: "IBM Plex Sans Thai", "Sarabun", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-body: "Sarabun", "IBM Plex Sans Thai", "TH SarabunPSK", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      margin: 0;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    p {
+      margin: 0;
+    }
+
+    /* Header Shell */
+    .app-header {
+      background: var(--surface);
+      border-bottom: 2px solid var(--border-strong);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--space-3) var(--space-6);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--brand);
+      color: var(--brand-ink);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      border: 1.5px solid var(--border-strong);
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.875rem;
+      color: var(--ink-secondary);
+    }
+
+    .header-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .case-switcher {
+      display: inline-flex;
+      background: var(--surface-warm);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .case-tab {
+      font-family: var(--font-heading);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .case-tab:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .case-tab[aria-selected="true"] {
+      background: var(--surface);
+      color: var(--brand);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .case-tab:focus-visible,
+    .btn:focus-visible,
+    .sub-tab:focus-visible,
+    .grid-cell:focus-visible,
+    .form-select:focus-visible,
+    .tool-btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--font-heading);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.06s ease;
+    }
+
+    .btn:hover {
+      background: var(--surface-subtle);
+      border-color: var(--ink-secondary);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: var(--brand-ink);
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-hover);
+      border-color: var(--brand-hover);
+    }
+
+    .btn-exhibit {
+      border-color: var(--brand);
+      color: var(--brand);
+      background: var(--brand-soft);
+    }
+
+    .btn-exhibit:hover {
+      background: #d5eaef;
+      border-color: var(--brand-hover);
+    }
+
+    /* Main Workspace Layout */
+    .workspace {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: var(--space-6);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+      .workspace {
+        grid-template-columns: minmax(0, 1.12fr) minmax(420px, 0.88fr);
+      }
+      .deduction-column {
+        position: sticky;
+        top: 84px;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: var(--space-6);
+    }
+
+    .dossier-column {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .deduction-column {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+    }
+
+    /* Case Intro Banner */
+    .case-header-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .case-tag {
+      font-family: var(--font-heading);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      border: 1px solid rgba(15, 92, 110, 0.25);
+    }
+
+    .case-topic {
+      font-size: 0.85rem;
+      color: var(--ink-secondary);
+    }
+
+    .case-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin-bottom: var(--space-3);
+    }
+
+    .case-story {
+      font-size: 1rem;
+      color: var(--ink-secondary);
+      background: var(--surface-subtle);
+      border-left: 4px solid var(--brand);
+      padding: var(--space-3) var(--space-4);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    /* Entity Category Tabs & Cards */
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .sub-tabs {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .sub-tab {
+      font-family: var(--font-heading);
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      color: var(--ink-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .sub-tab:hover {
+      border-color: var(--brand);
+      color: var(--ink);
+    }
+
+    .sub-tab[aria-selected="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #ffffff;
+    }
+
+    .entity-group {
+      margin-bottom: var(--space-5);
+    }
+
+    .entity-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .entity-group-label {
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: var(--space-3);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .entity-cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .entity-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-3);
+    }
+
+    /* Murdle-style Suspect Horizontal Card */
+    .suspect-card {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      padding: var(--space-4);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+      transition: background 0.15s ease;
+    }
+
+    .suspect-card:hover,
+    .mini-entity-card:hover {
+      background: var(--surface-subtle);
+    }
+
+    .entity-stamp {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-warm);
+      border: 1.5px solid var(--border-strong);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      color: var(--ink);
+    }
+
+    .entity-stamp svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .suspect-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .entity-name {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .entity-meta {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--brand);
+      margin-bottom: 6px;
+    }
+
+    .entity-desc {
+      font-size: 0.94rem;
+      color: var(--ink-secondary);
+      line-height: 1.55;
+    }
+
+    /* Murdle-style Vertical Cards for Agents & Locations */
+    .mini-entity-card {
+      padding: var(--space-4);
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: background 0.15s ease;
+    }
+
+    .mini-entity-card .entity-stamp {
+      margin-bottom: var(--space-2);
+    }
+
+    .mini-entity-card .entity-desc {
+      text-align: left;
+      width: 100%;
+      margin-top: var(--space-2);
+      padding-top: var(--space-2);
+      border-top: 1px dashed var(--border);
+    }
+
+    /* Clues List */
+    .clues-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .clue-item {
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-start;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .clue-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .clue-item.climax-clue {
+      background: var(--danger-soft);
+      border: 1.5px solid rgba(180, 35, 24, 0.35);
+    }
+
+    .clue-item.climax-clue .clue-num {
+      background: var(--danger);
+    }
+
+    .clue-item.climax-clue .clue-text {
+      font-weight: 700;
+      color: #7a1c14;
+    }
+
+    .clue-item.hint-active {
+      border: 2px solid var(--brand);
+      background: var(--brand-soft);
+    }
+
+    .clue-text {
+      font-size: 0.98rem;
+      color: var(--ink);
+    }
+
+    /* Interactive L-Shaped Deduction Grid */
+    .grid-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      background: var(--surface-subtle);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .stamp-mode-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stamp-mode-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      margin-right: 4px;
+    }
+
+    .tool-btn {
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
+
+    .tool-btn[aria-pressed="true"] {
+      background: var(--ink);
+      color: #ffffff;
+      border-color: var(--ink);
+    }
+
+    .toggle-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-label input {
+      accent-color: var(--brand);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .hover-readout {
+      min-height: 36px;
+      padding: 6px 12px;
+      margin-bottom: var(--space-3);
+      border-radius: var(--radius-sm);
+      background: var(--surface-warm);
+      font-size: 0.86rem;
+      color: var(--ink-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+    }
+
+    .hover-readout strong {
+      color: var(--ink);
+    }
+
+    .grid-scroll-wrap {
+      overflow-x: auto;
+      padding-bottom: var(--space-2);
+    }
+
+    .murdle-grid-table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      user-select: none;
+    }
+
+    .axis-super-top {
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-secondary);
+      text-align: center;
+      padding-bottom: 6px;
+    }
+
+    .axis-super-left {
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-secondary);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-align: center;
+      padding-right: 6px;
+    }
+
+    .col-icon-th,
+    .row-icon-th {
+      width: 52px;
+      height: 52px;
+      padding: 4px;
+      text-align: center;
+      vertical-align: middle;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+
+    .col-icon-th.axis-highlight,
+    .row-icon-th.axis-highlight {
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .header-mini-btn {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      padding: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .header-mini-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .header-short-label {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 600;
+      line-height: 1.1;
+      max-width: 46px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .grid-cell-td {
+      padding: 0;
+      width: 52px;
+      height: 52px;
+      border: 1px solid #b8b2a3;
+      background: #ffffff;
+    }
+
+    /* Thick L-shaped 3x3 subgrid borders just like Murdle */
+    .thick-top {
+      border-top: 2.5px solid var(--border-strong) !important;
+    }
+    .thick-bottom {
+      border-bottom: 2.5px solid var(--border-strong) !important;
+    }
+    .thick-left {
+      border-left: 2.5px solid var(--border-strong) !important;
+    }
+    .thick-right {
+      border-right: 2.5px solid var(--border-strong) !important;
+    }
+
+    .empty-quadrant {
+      border: none !important;
+      background: transparent !important;
+    }
+
+    .grid-cell {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 700;
+      padding: 0;
+      transition: background 0.1s ease;
+    }
+
+    .grid-cell:hover {
+      background: #f1f5f9;
+    }
+
+    .grid-cell.state-x {
+      color: var(--danger);
+      background: #fffafa;
+    }
+
+    .grid-cell.state-x.is-auto {
+      color: #d9776f;
+      font-size: 1.25rem;
+    }
+
+    .grid-cell.state-v {
+      color: var(--brand);
+      background: var(--brand-soft);
+    }
+
+    .grid-cell.state-conflict {
+      background: var(--warning-soft);
+      box-shadow: inset 0 0 0 2px var(--danger);
+    }
+
+    .grid-legend {
+      margin-top: var(--space-3);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-2);
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Accusation Form */
+    .accusation-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .field-label {
+      font-family: var(--font-heading);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .form-select {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-2);
+    }
+
+    .action-row .btn-primary {
+      flex: 1;
+      min-width: 170px;
+    }
+
+    /* Inline Feedback & Hints Panel */
+    .feedback-box {
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      background: var(--surface-subtle);
+    }
+
+    .feedback-box[hidden] {
+      display: none;
+    }
+
+    .feedback-box.is-correct {
+      background: var(--success-soft);
+      border-color: #6ce9a6;
+    }
+
+    .feedback-box.is-incorrect {
+      background: var(--danger-soft);
+      border-color: #fda29b;
+    }
+
+    .feedback-box.is-hint {
+      background: var(--warning-soft);
+      border-color: #fec84b;
+    }
+
+    .feedback-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .is-correct .feedback-title { color: var(--success); }
+    .is-incorrect .feedback-title { color: var(--danger); }
+    .is-hint .feedback-title { color: var(--warning); }
+
+    .solution-steps {
+      margin-top: var(--space-3);
+      padding-left: var(--space-5);
+      font-size: 0.92rem;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Modal Dialog for Exhibit A & How to Play */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(24, 34, 48, 0.55);
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4);
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal-panel {
+      background: var(--surface);
+      border: 2px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      max-width: 720px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: var(--space-6);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding-bottom: var(--space-3);
+      border-bottom: 2px solid var(--border-strong);
+      margin-bottom: var(--space-4);
+    }
+
+    .exhibit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .exhibit-item {
+      padding: var(--space-4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface-subtle);
+    }
+
+    .exhibit-item h4 {
+      font-size: 0.98rem;
+      color: var(--brand);
+      margin-bottom: 6px;
+    }
+
+    .exhibit-item ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.9rem;
+      color: var(--ink-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-4);
+      font-size: 0.88rem;
+    }
+
+    .ref-table th,
+    .ref-table td {
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .ref-table th {
+      background: var(--surface-warm);
+      font-family: var(--font-heading);
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .workspace {
+        padding: var(--space-4);
+      }
+      .card {
+        padding: var(--space-4);
+      }
+      .header-inner {
+        padding: var(--space-3) var(--space-4);
+      }
+      .suspect-card {
+        flex-direction: column;
+      }
+      .col-icon-th,
+      .row-icon-th,
+      .grid-cell-td {
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <path d="M9 11h4"></path>
+            <path d="M11 9v4"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Bio-Murdle: แฟ้มสืบสวนประสาทชีวเคมี</h1>
+          <p class="brand-subtitle">เกมปริศนาตารางอนุมานเชิงวิชาการ เรื่องสารสื่อประสาท (Neurotransmitters)</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="case-switcher" role="tablist" aria-label="เลือกคดีปริศนา">
+          <button type="button" class="case-tab" role="tab" id="tab-case-0" aria-selected="true" data-case-idx="0">
+            คดีที่ 1: ปริศนาสารพิษ
+          </button>
+          <button type="button" class="case-tab" role="tab" id="tab-case-1" aria-selected="false" data-case-idx="1">
+            คดีที่ 2: จารกรรมชีวโมเลกุล
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-exhibit" id="btn-open-exhibit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          ของกลาง A (คู่มือชีวเคมี)
+        </button>
+
+        <button type="button" class="btn" id="btn-open-rules">
+          วิธีไขคดี
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <!-- Left Column: Case Story, Entity Cards, Clues -->
+    <div class="dossier-column">
+      <section class="card" aria-labelledby="case-title">
+        <div class="case-header-top">
+          <span class="case-tag" id="case-level-tag">ระดับพื้นฐาน</span>
+          <span class="case-topic" id="case-topic-text"></span>
+        </div>
+        <h2 class="case-title" id="case-title"></h2>
+        <p class="case-story" id="case-story"></p>
+      </section>
+
+      <section class="card" aria-labelledby="entities-heading">
+        <div class="section-header">
+          <h3 class="section-title" id="entities-heading">ข้อมูลประกอบคดี</h3>
+          <div class="sub-tabs" role="tablist" aria-label="กรองหมวดหมู่การ์ดข้อมูล">
+            <button type="button" class="sub-tab" role="tab" aria-selected="true" data-filter="all">ทั้งหมด</button>
+            <button type="button" class="sub-tab" role="tab" aria-selected="false" data-filter="suspects">ผู้ต้องสงสัย</button>
+            <button type="button" class="sub-tab" role="tab" aria-selected="false" data-filter="weapons">ของกลาง</button>
+            <button type="button" class="sub-tab" role="tab" aria-selected="false" data-filter="locations">สถานที่</button>
+          </div>
+        </div>
+
+        <div id="entities-container"></div>
+      </section>
+
+      <section class="card" aria-labelledby="clues-heading">
+        <div class="section-header">
+          <h3 class="section-title" id="clues-heading">เบาะแสและหลักฐาน</h3>
+          <button type="button" class="btn" id="btn-step-hint">ขอคำใบ้ทีละขั้น</button>
+        </div>
+        <ol class="clues-list" id="clues-list"></ol>
+        <div class="feedback-box is-hint" id="hint-box" hidden>
+          <div class="feedback-title" id="hint-title"></div>
+          <p id="hint-body"></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Right Column: Interactive L-Shaped Deduction Grid & Accusation -->
+    <div class="deduction-column">
+      <section class="card" aria-labelledby="grid-heading">
+        <div class="section-header">
+          <h3 class="section-title" id="grid-heading">ตารางอนุมาน (Deduction Grid)</h3>
+          <button type="button" class="btn" id="btn-reset-grid">ล้างตาราง</button>
+        </div>
+
+        <div class="grid-toolbar">
+          <div class="stamp-mode-group" role="group" aria-label="โหมดการคลิกช่องตาราง">
+            <span class="stamp-mode-label">โหมดคลิก:</span>
+            <button type="button" class="tool-btn" data-mode="cycle" aria-pressed="true">สลับ (✕ → ✓)</button>
+            <button type="button" class="tool-btn" data-mode="x" aria-pressed="false">กากบาท ✕</button>
+            <button type="button" class="tool-btn" data-mode="v" aria-pressed="false">ขีดถูก ✓</button>
+          </div>
+
+          <label class="toggle-label">
+            <input type="checkbox" id="chk-auto-cross" checked>
+            เติม ✕ อัตโนมัติเมื่อใส่ ✓
+          </label>
+        </div>
+
+        <div class="hover-readout" id="grid-readout" aria-live="polite">
+          <span>ชี้หรือคลิกช่องในตารางเพื่อดูคู่ความสัมพันธ์</span>
+        </div>
+
+        <div class="grid-scroll-wrap">
+          <table class="murdle-grid-table" id="deduction-grid" aria-label="ตารางอนุมานจับคู่ผู้ต้องสงสัย ของกลาง และสถานที่"></table>
+        </div>
+
+        <div class="grid-legend">
+          <span><strong>✕</strong> = เป็นไปไม่ได้ • <strong>✓</strong> = จับคู่ตรงกันแน่นอน</span>
+          <span>คลิกขวาเพื่อสลับ <strong>✓</strong> ได้ทันที</span>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="accusation-heading">
+        <h3 class="section-title" id="accusation-heading" style="margin-bottom: 14px;">สรุปสำนวนคดี</h3>
+        <form class="accusation-form" id="accusation-form" novalidate>
+          <div class="field-group">
+            <label class="field-label" for="sel-suspect" id="lbl-suspect">ผู้ก่อเหตุ?</label>
+            <select class="form-select" id="sel-suspect" required></select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="sel-weapon" id="lbl-weapon">ของกลางที่ใช้?</label>
+            <select class="form-select" id="sel-weapon" required></select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="sel-location" id="lbl-location">สถานที่?</label>
+            <select class="form-select" id="sel-location" required></select>
+          </div>
+
+          <div class="action-row">
+            <button type="submit" class="btn btn-primary">ตรวจคำตอบสำนวนคดี</button>
+            <button type="button" class="btn" id="btn-autofill-from-grid" title="ดึงคู่ที่ติ๊ก ✓ ในตารางมาช่วยกรอก">ดึงคู่จากตาราง</button>
+          </div>
+        </form>
+
+        <div class="feedback-box" id="result-box" hidden aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal: Exhibit A (Biochemistry Reference Codex) -->
+  <div class="modal-backdrop" id="modal-exhibit" hidden role="dialog" aria-modal="true" aria-labelledby="exhibit-modal-title">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div>
+          <span class="case-tag">เอกสารอ้างอิงประจำตัวนักสืบ</span>
+          <h2 id="exhibit-modal-title" style="margin-top: 6px;">ของกลาง A: คู่มือชีวเคมีสารสื่อประสาท</h2>
+        </div>
+        <button type="button" class="btn" data-close-modal="modal-exhibit">ปิดหน้าต่าง</button>
+      </div>
+
+      <div class="exhibit-grid">
+        <div class="exhibit-item">
+          <h4>1. มอเตอร์โปรตีนและการขนส่งตามแอกซอน</h4>
+          <ul>
+            <li><strong>Kinesin:</strong> ลำเลียงถุงเก็บสารสื่อประสาทจากตัวเซลล์ไปยังปลายประสาท (<em>Anterograde transport</em>, ความเร็ว 0.5–1.5 ซม./ชั่วโมง)</li>
+            <li><strong>Dynein:</strong> ลำเลียงโปรตีนที่ใช้แล้วจากปลายประสาทย้อนกลับสู่ตัวเซลล์ (<em>Retrograde axoplasmic transport</em>)</li>
+            <li><strong>SNARE &amp; Synaptotagmin:</strong> แคลเซียมจับกับ <em>Synaptotagmin</em> บนถุงเวสิเคิล เหนี่ยวนำการหลอมรวมเยื่อหุ้มผ่าน VAMP, Syntaxin และ SNAP-25</li>
+          </ul>
+        </div>
+
+        <div class="exhibit-item">
+          <h4>2. สารตั้งต้นและโคแฟกเตอร์ในการสังเคราะห์</h4>
+          <ul>
+            <li><strong>Acetylcholine (ACh):</strong> สังเคราะห์จาก <em>Choline + Acetyl-CoA</em> โดยเอนไซม์ Choline acetyltransferase</li>
+            <li><strong>GABA:</strong> สังเคราะห์จาก <em>Glutamate</em> โดยเอนไซม์ Glutamate decarboxylase ซึ่งต้องใช้ <em>Pyridoxal phosphate (วิตามิน B6)</em></li>
+            <li><strong>Glycine:</strong> สังเคราะห์จากกรดอะมิโน <em>Serine</em> โดยเอนไซม์ Serine transhydroxymethylase</li>
+            <li><strong>Catecholamines:</strong> เริ่มจากเปลี่ยน <em>Phenylalanine → Tyrosine</em> ในตับด้วย Phenylalanine hydroxylase (ขั้นกำหนดอัตราในเซลล์ประสาทคือ Tyrosine hydroxylase)</li>
+            <li><strong>Serotonin (5-HT):</strong> สังเคราะห์จาก <em>Tryptophan</em> พบมากถึง 90% ในเซลล์ <em>Enterochromaffin</em> ของระบบทางเดินอาหาร</li>
+            <li><strong>Nitric Oxide (NO):</strong> สังเคราะห์ทันทีเมื่อต้องการจาก <em>L-arginine + O₂ + NADPH</em> ด้วยเอนไซม์ NOS ได้ผลผลิตเป็น <em>NO</em> และ <em>L-citrulline</em></li>
+          </ul>
+        </div>
+
+        <div class="exhibit-item">
+          <h4>3. การยุติสัญญาณและเภสัชวิทยาคลินิก</h4>
+          <ul>
+            <li><strong>AChE (Acetylcholinesterase):</strong> ย่อยสลาย ACh ยายับยั้งเอนไซม์นี้ใช้รักษาโรคต้อหิน โรคกล้ามเนื้ออ่อนแรง <em>Myasthenia gravis</em> และแก้ฤทธิ์ยา <em>Atropine</em> (ส่วนสารพิษออร์แกโนฟอสเฟตทำให้ ACh สะสมเกินพิกัด)</li>
+            <li><strong>MAO &amp; COMT:</strong> ย่อยสลายกลุ่ม Catecholamines (Dopamine, Norepinephrine, Epinephrine) ยา <em>Isoniazid</em> ยับยั้ง MAO ได้</li>
+            <li><strong>Strychnine:</strong> ยับยั้งตัวรับไกลซีน (ช่อง Cl⁻) ในไขสันหลัง ทำให้กล้ามเนื้อและกะบังลมหดเกร็งอย่างต่อเนื่องจนขาดออกซิเจน</li>
+          </ul>
+        </div>
+
+        <div class="exhibit-item">
+          <h4>4. การแปรรูป Neuropeptides และ NOS Isoforms</h4>
+          <ul>
+            <li><strong>Neuropeptides:</strong> สังเคราะห์ที่ตัวเซลล์ (Cell soma) → ตัด <em>Signal peptide</em> ออกจาก Pre-propeptide ใน RER → บรรจุลง Dense-core vesicles ส่งไป Golgi → ตัดแต่งด้วย <strong>PC1/PC2</strong>, <strong>CPE</strong> และเติมหมู่เอไมด์ที่ปลาย C-terminal ด้วยเอนไซม์ <strong>PAM</strong></li>
+            <li><strong>ไอโซฟอร์มของ NOS:</strong> <strong>nNOS</strong> (เซลล์ประสาท), <strong>eNOS</strong> (เยื่อบุหลอดเลือด) และ <strong>iNOS / NOS2</strong> (เซลล์ภูมิคุ้มกัน ถูกกระตุ้นด้วยไซโตไคน์ TNF-α, IL-1β, IFN-γ เมื่อเกิดการอักเสบ)</li>
+          </ul>
+        </div>
+      </div>
+
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>หมวดหมู่สารสื่อประสาท</th>
+            <th>แหล่งสังเคราะห์และการเก็บ</th>
+            <th>ลักษณะการออกฤทธิ์และการกำจัด</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Small-molecule</strong><br>(เช่น Glutamate, GABA, ACh)</td>
+            <td>สังเคราะห์ที่ปลายประสาท เก็บในถุง Synaptic vesicles ขนาดเล็ก</td>
+            <td>ออกฤทธิ์เร็ว ระยะสั้น กำจัดอย่างรวดเร็วผ่าน Reuptake หรือเอนไซม์</td>
+          </tr>
+          <tr>
+            <td><strong>Neuropeptides</strong><br>(เช่น Substance P, Endorphins)</td>
+            <td>สังเคราะห์ที่ตัวเซลล์ (Soma) เก็บในถุง Dense-core vesicles ขนาดใหญ่</td>
+            <td>ออกฤทธิ์ช้าแต่ยาวนาน ไม่มี Reuptake ย่อยสลายด้วยเอนไซม์ Peptidases</td>
+          </tr>
+          <tr>
+            <td><strong>Gaseous (NO)</strong><br>(Unconventional)</td>
+            <td>ไม่เก็บในถุงเวสิเคิล สังเคราะห์ขึ้นทันทีเมื่อต้องการ</td>
+            <td>แพร่ผ่านเยื่อหุ้มเซลล์โดยตรง ส่งสัญญาณย้อนกลับ (Retrograde messenger)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal: How to Play -->
+  <div class="modal-backdrop" id="modal-rules" hidden role="dialog" aria-modal="true" aria-labelledby="rules-modal-title">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div>
+          <span class="case-tag">คู่มือนักตรึก</span>
+          <h2 id="rules-modal-title" style="margin-top: 6px;">วิธีไขคดีด้วยตารางอนุมาน</h2>
+        </div>
+        <button type="button" class="btn" data-close-modal="modal-rules">เข้าใจแล้ว</button>
+      </div>
+
+      <div class="exhibit-grid">
+        <div class="exhibit-item">
+          <h4>1. กฎการจับคู่ 1 ต่อ 1</h4>
+          <p style="font-size:0.92rem; color:var(--ink-secondary);">
+            ในแต่ละคดี ผู้ต้องสงสัยทั้ง 3 คนจะถือครองของกลางคนละ 1 ชิ้น และอยู่ในสถานที่คนละ 1 แห่งโดยไม่ซ้ำกันเลย
+          </p>
+        </div>
+        <div class="exhibit-item">
+          <h4>2. การใช้สัญลักษณ์ ✕ และ ✓</h4>
+          <p style="font-size:0.92rem; color:var(--ink-secondary);">
+            คลิกช่องตาราง 1 ครั้งเพื่อใส่ <strong>✕</strong> (ตัดความเป็นไปได้) และคลิกอีกครั้งเพื่อใส่ <strong>✓</strong> (ยืนยันคู่ที่ตรงกัน) เมื่อได้ <strong>✓</strong> ในช่องใดแล้ว ช่องอื่นในแถวและคอลัมน์ของกรอบ 3×3 นั้นจะเป็น <strong>✕</strong> ทั้งหมด
+          </p>
+        </div>
+        <div class="exhibit-item">
+          <h4>3. การเชื่อมโยงตรรกะและชีวเคมี</h4>
+          <p style="font-size:0.92rem; color:var(--ink-secondary);">
+            ถอดรหัสคำใบ้ทางชีวเคมีโดยเทียบกับการ์ดข้อมูลหรือเปิดดู <strong>"ของกลาง A"</strong> หากรู้ว่าผู้ต้องสงสัย ก. ใช้ของกลาง A และอยู่ห้อง B คุณสามารถใส่ <strong>✓</strong> ในช่องเชื่อมระหว่างของกลาง A กับห้อง B ได้ด้วย
+          </p>
+        </div>
+        <div class="exhibit-item">
+          <h4>4. เบาะแสสุดท้ายชี้ตัวผู้ก่อเหตุ</h4>
+          <p style="font-size:0.92rem; color:var(--ink-secondary);">
+            เมื่อจับคู่ตารางจนครบแล้ว ให้ใช้เบาะแสข้อที่ 5 (แถบสีแดง) เพื่อชี้ชัดว่าเหตุการณ์เกิดขึ้นจากของกลางชิ้นใด หรือเกิดขึ้นในห้องใด แล้วส่งสรุปสำนวนคดี
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const ICONS = {
+        coat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3l4 5 4-5"/><path d="M4 7l4-4h8l4 4v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7z"/><path d="M12 8v13"/></svg>',
+        stethoscope: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>',
+        flask: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v6L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 8V2"/><path d="M8.5 2h7"/><path d="M7 15h10"/></svg>',
+        skullVial: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="15" rx="2"/><path d="M9 2h6v4H9z"/><path d="M10 12l4 4"/><path d="M14 12l-4 4"/></svg>',
+        dropper: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m2 22 1-1h3l9-9"/><path d="M3 21v-3l9-9"/><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z"/></svg>',
+        capsule: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>',
+        microscope: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18h8"/><path d="M3 22h18"/><path d="M14 22a7 7 0 1 0 0-14h-1"/><path d="M9 14h2"/><path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/><path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/></svg>',
+        vault: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M12 6v3"/><path d="M12 15v3"/><path d="M6 12h3"/><path d="M15 12h3"/></svg>',
+        garden: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-9"/><path d="M15.4 13a4 4 0 0 0 1.6-7.6A5 5 0 0 0 7 5.4a4 4 0 0 0 1.6 7.6Z"/><path d="M7 22h10"/></svg>',
+        dna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m17 6-2.5-2.5"/><path d="m14 8-1-1"/><path d="m7 18 2.5 2.5"/><path d="m3.5 14.5.5.5"/><path d="m20 9 .5.5"/><path d="m6.5 12.5 1 1"/><path d="m16.5 10.5 1 1"/><path d="m10 16 1.5 1.5"/></svg>',
+        bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+        brain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.54Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.54Z"/></svg>',
+        peptide: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="8" r="3"/><circle cx="8" cy="18" r="3"/><circle cx="18" cy="18" r="2.5"/><path d="M8.8 6.8l6.4 0.8"/><path d="M16 10.2l-6 5.6"/><path d="M11 18h4.5"/></svg>',
+        gas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
+        vesicle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1.5"/><circle cx="15" cy="10" r="1.5"/><circle cx="12" cy="15" r="1.5"/></svg>',
+        somaLab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8"/><path d="M12 16v4"/><path d="M7 10h2l2-3 2 6 2-3h2"/></svg>',
+        petri: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="11" rx="9" ry="5"/><path d="M3 11v3c0 2.8 4 5 9 5s9-2.2 9-5v-3"/><circle cx="9" cy="10.5" r="1"/><circle cx="14" cy="12" r="1"/><circle cx="13" cy="9" r="0.8"/></svg>',
+        cryoDock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>'
+      };
+
+      const CASES = [
+        {
+          id: "case-1",
+          levelTag: "คดีที่ 1 • ระดับพื้นฐาน",
+          topic: "Small-molecule Neurotransmitters • ตัวรับ • เภสัชวิทยาคลินิก",
+          title: "1. ปริศนาสารพิษในสถาบันประสาทวิทยา",
+          story: "เกิดเหตุฉุกเฉินในสถาบันประสาทวิทยา เมื่อหุ่นจำลองระบบประสาทชีวภาพต้นแบบเกิดอาการชักเกร็งอย่างรุนแรง นักตรึกลอจิโกพบว่าผู้ต้องสงสัยทั้ง 3 คนต่างพกสารออกฤทธิ์ต่อระบบสารสื่อประสาทคนละชนิด และกระจายตัวอยู่ใน 3 พื้นที่ของสถาบัน จงใช้ความรู้ชีวเคมีและตรรกะสืบหาว่า ใครคือผู้ก่อเหตุ ใช้สารชนิดใด และผู้ก่อเหตุซ่อนตัวอยู่ที่ใด!",
+          labels: {
+            weaponsGroup: "ของกลาง (สารออกฤทธิ์ต่อระบบประสาท)",
+            accuseSuspect: "ผู้ก่อเหตุคือใคร?",
+            accuseWeapon: "สารออกฤทธิ์ที่ใช้ก่อเหตุ?",
+            accuseLocation: "ผู้ก่อเหตุอยู่ที่สถานที่ใด?"
+          },
+          suspects: [
+            {
+              id: "s0",
+              short: "ดร.คีรี",
+              name: "ดร.คีรี",
+              meta: "180 ซม. • ถนัดขวา",
+              desc: "ผู้เชี่ยวชาญด้านช่องไอออนที่เปิดรับ Na⁺ และ Ca²⁺ อย่างรวดเร็ว เช่น ตัวรับ AMPA และ NMDA ของกลูตาเมต",
+              icon: "coat"
+            },
+            {
+              id: "s1",
+              short: "พญ.นารา",
+              name: "พญ.นารา",
+              meta: "165 ซม. • ถนัดซ้าย",
+              desc: "แพทย์ผู้ศึกษาเอนไซม์ในตับที่เปลี่ยนกรดอะมิโนฟีนิลอะลานีน (Phenylalanine) ให้กลายเป็นไทโรซีน (Tyrosine)",
+              icon: "stethoscope"
+            },
+            {
+              id: "s2",
+              short: "ภก.ภีม",
+              name: "เภสัชกรภีม",
+              meta: "172 ซม. • ถนัดซ้าย",
+              desc: "นักวิจัยระบบทางเดินอาหาร ผู้ศึกษาเซลล์ Enterochromaffin และการอาเจียนผ่านตัวรับชนิด 5-HT₃",
+              icon: "flask"
+            }
+          ],
+          weapons: [
+            {
+              id: "w0",
+              short: "สตริกนิน",
+              name: "สตริกนิน (Strychnine)",
+              meta: "ยับยั้งตัวรับ • น้ำหนักเบา",
+              desc: "ขัดขวางการทำงานของตัวรับไกลซีน (Glycine receptor) ซึ่งเป็นช่องไอออนคลอไรด์ (Cl⁻) ในไขสันหลัง",
+              icon: "skullVial"
+            },
+            {
+              id: "w1",
+              short: "ออร์แกโนฯ",
+              name: "ออร์แกโนฟอสเฟต (Organophosphate)",
+              meta: "ยับยั้งเอนไซม์สลายสาร • น้ำหนักปานกลาง",
+              desc: "ยับยั้งเอนไซม์ Acetylcholinesterase (AChE) ทำให้เกิดการสะสมของ ACh ในช่องว่างไซแนปส์มากผิดปกติ",
+              icon: "dropper"
+            },
+            {
+              id: "w2",
+              short: "ไอโซไนอะซิด",
+              name: "ไอโซไนอะซิด (Isoniazid)",
+              meta: "ยับยั้งเอนไซม์สลายสาร • น้ำหนักเบา",
+              desc: "เดิมเป็นยารักษาวัณโรค แต่มีฤทธิ์ยับยั้งเอนไซม์ Monoamine oxidase (MAO) จึงช่วยลดอาการซึมเศร้าได้",
+              icon: "capsule"
+            }
+          ],
+          locations: [
+            {
+              id: "l0",
+              short: "แล็บไขสันหลัง",
+              name: "ห้องปฏิบัติการไขสันหลัง",
+              meta: "ในร่ม",
+              desc: "ห้องทดลองระบบประสาทส่วนกลางสำหรับศึกษาวงจรสะท้อนกลับ (Reflex) และเซลล์ประสาทสั่งการ",
+              icon: "microscope"
+            },
+            {
+              id: "l1",
+              short: "คลังเวชภัณฑ์",
+              name: "ห้องคลังเวชภัณฑ์",
+              meta: "ในร่ม",
+              desc: "ห้องนิรภัยสำหรับเก็บยารักษาโรคต้อหิน และยารักษาโรคกล้ามเนื้ออ่อนแรง (Myasthenia gravis)",
+              icon: "vault"
+            },
+            {
+              id: "l2",
+              short: "สวนบำบัดฯ",
+              name: "สวนบำบัดพฤกษศาสตร์",
+              meta: "กลางแจ้ง",
+              desc: "สวนหย่อมรับแสงแดดสำหรับพักฟื้นผู้ป่วยที่มีภาวะความผิดปกติทางอารมณ์",
+              icon: "garden"
+            }
+          ],
+          clues: [
+            {
+              text: "ผู้เชี่ยวชาญที่ศึกษาแหล่งเซลล์ซึ่งพบเซโรโทนิน (Serotonin) มากถึงร้อยละ 90 ของร่างกาย กำลังโต้เถียงทางวิชาการอยู่กับผู้ที่ถือสารซึ่งยับยั้งการสลายตัวของสารสื่อประสาทที่สังเคราะห์จาก Choline และ Acetyl-CoA",
+              isClimax: false,
+              hint: "เบาะแสที่ 1: เซโรโทนิน 90% พบในเซลล์ Enterochromaffin (= เภสัชกรภีม) ส่วนสารสื่อประสาทที่สร้างจาก Choline + Acetyl-CoA คือ ACh ซึ่งถูกย่อยโดย AChE (= ออร์แกโนฟอสเฟต) ทั้งสองคนโต้เถียงกัน แปลว่าเป็นคนละคนกัน จึงใส่ ✕ ที่ช่อง (เภสัชกรภีม × ออร์แกโนฟอสเฟต)"
+            },
+            {
+              text: "ไม่พบสารที่ออกฤทธิ์ยับยั้งเอนไซม์ซึ่งทำหน้าที่สลาย Norepinephrine และ Epinephrine อยู่ในพื้นที่กลางแจ้ง",
+              isClimax: false,
+              hint: "เบาะแสที่ 2: Norepinephrine และ Epinephrine ถูกสลายด้วยเอนไซม์ MAO/COMT สารที่ยับยั้ง MAO ในคดีนี้คือ ไอโซไนอะซิด และพื้นที่กลางแจ้งมีเพียงแห่งเดียวคือ สวนบำบัดพฤกษศาสตร์ จึงใส่ ✕ ที่ช่อง (ไอโซไนอะซิด × สวนบำบัดพฤกษศาสตร์)"
+            },
+            {
+              text: "ผู้ต้องสงสัยที่ตัวสูงที่สุดถูกพบตัวอยู่ในห้องที่เก็บรักษายากลุ่มเดียวกับที่ใช้แก้ฤทธิ์ของยา Atropine และรักษาโรค Myasthenia gravis",
+              isClimax: false,
+              hint: "เบาะแสที่ 3: ผู้ที่สูงที่สุดคือ ดร.คีรี (180 ซม.) และยากลุ่ม AChE inhibitors ใช้รักษา Myasthenia gravis และแก้ฤทธิ์ Atropine ซึ่งเก็บไว้ที่ ห้องคลังเวชภัณฑ์ จึงใส่ ✓ ที่ช่อง (ดร.คีรี × ห้องคลังเวชภัณฑ์)"
+            },
+            {
+              text: "ผู้ที่ศึกษาปฏิกิริยาขั้นแรกของการสร้างสารตั้งต้นกลุ่ม Catecholamines ในตับ เป็นผู้ครอบครองสารพิษที่ออกฤทธิ์ขัดขวางสารสื่อประสาทยับยั้งซึ่งสังเคราะห์มาจากกรดอะมิโน Serine",
+              isClimax: false,
+              hint: "เบาะแสที่ 4: การเปลี่ยน Phenylalanine → Tyrosine ในตับคือความเชี่ยวชาญของ พญ.นารา ส่วนสารสื่อประสาทยับยั้งที่สังเคราะห์จาก Serine คือ Glycine ซึ่งถูกขัดขวางตัวรับโดย สตริกนิน จึงใส่ ✓ ที่ช่อง (พญ.นารา × สตริกนิน) แล้วตัดตัวเลือกที่เหลือในตาราง!"
+            },
+            {
+              text: "ผลตรวจวิเคราะห์ยืนยันว่า หุ่นจำลองเสียหายจากสารพิษที่ทำให้ไม่มีการยับยั้งเซลล์ประสาท ส่งผลให้กล้ามเนื้อและกะบังลมหดเกร็งอย่างรุนแรงต่อเนื่องจนขาดออกซิเจน!",
+              isClimax: true,
+              hint: "เบาะแสที่ 5 (ชี้ตัวผู้ก่อเหตุ): ฤทธิ์ทำให้กล้ามเนื้อและกะบังลมหดตัวรุนแรงต่อเนื่องจนขาดออกซิเจน เป็นพิษวิทยาเฉพาะของ สตริกนิน (Strychnine) เมื่อดูจากตารางว่าใครถือสตริกนินและอยู่ที่ไหน ก็จะได้คำตอบทั้ง 3 ช่องทันที!"
+            }
+          ],
+          solution: {
+            // wOfS[s] = w, lOfS[s] = l
+            wOfS: [1, 0, 2],
+            lOfS: [1, 2, 0],
+            culpritSuspect: "s1",
+            culpritWeapon: "w0",
+            culpritLocation: "l2",
+            explanation: [
+              "เภสัชกรภีม (ศึกษาเซลล์ Enterochromaffin ที่พบ Serotonin 90%) โต้เถียงกับคนถือออร์แกโนฟอสเฟต (ยับยั้ง AChE ที่สลาย ACh) → เภสัชกรภีมไม่ได้ถือออร์แกโนฟอสเฟต",
+              "พญ.นารา (ศึกษาเอนไซม์เปลี่ยน Phenylalanine เป็น Tyrosine ในตับ) ถือสตริกนิน (ยับยั้งตัวรับ Glycine ที่สังเคราะห์จาก Serine) → บังคับให้ ดร.คีรี ถือออร์แกโนฟอสเฟต และ เภสัชกรภีม ถือไอโซไนอะซิด",
+              "ดร.คีรี (สูงที่สุด 180 ซม.) อยู่ที่ห้องคลังเวชภัณฑ์ (เก็บยารักษา Myasthenia gravis / แก้ฤทธิ์ Atropine)",
+              "ไอโซไนอะซิด (ยับยั้งเอนไซม์ MAO ที่สลาย Norepinephrine/Epinephrine) ไม่ได้อยู่ที่สวนบำบัดฯ (กลางแจ้ง) → เภสัชกรภีมและไอโซไนอะซิดจึงอยู่ที่ห้องปฏิบัติการไขสันหลัง และ พญ.นารา อยู่ที่สวนบำบัดพฤกษศาสตร์",
+              "อาการกล้ามเนื้อและกะบังลมหดเกร็งต่อเนื่องจนขาดออกซิเจนเกิดจากพิษของ สตริกนิน ดังนั้นผู้ก่อเหตุคือ พญ.นารา ด้วยสตริกนิน และพบตัวอยู่ที่สวนบำบัดพฤกษศาสตร์"
+            ]
+          }
+        },
+        {
+          id: "case-2",
+          levelTag: "คดีที่ 2 • ระดับกลาง",
+          topic: "Small-molecule vs Neuropeptides vs Gaseous NO • การขนส่งในแอกซอน • ตรรกะ Either/Or",
+          title: "2. แผนจารกรรมหลอดตัวอย่างชีวโมเลกุล",
+          story: "หลอดตัวอย่างระบบสารสื่อประสาทล้ำค่า 3 ประเภท ถูกลักลอบนำออกจากตู้ควบคุมอุณหภูมิของศูนย์วิจัย! นักวิจัยผู้ต้องสงสัยทั้ง 3 คนกระจายตัวอยู่ตามพื้นที่ต่างๆ พร้อมของกลางคนละ 1 ชิ้น และหนึ่งในนั้นได้แอบเปิดหลอดตัวอย่างจนเกิดร่องรอยปฏิกิริยาตกค้างในห้องเกิดเหตุ!",
+          labels: {
+            weaponsGroup: "ของกลาง (หลอดตัวอย่างชีวโมเลกุล)",
+            accuseSuspect: "ผู้ลักลอบเปิดหลอดคือใคร?",
+            accuseWeapon: "ของกลางที่ถูกเปิดคือชิ้นใด?",
+            accuseLocation: "สถานที่เกิดเหตุคือห้องใด?"
+          },
+          suspects: [
+            {
+              id: "s0",
+              short: "เรณู",
+              name: "นักวิจัยเรณู",
+              meta: "160 ซม. • ถนัดซ้าย",
+              desc: "ศึกษากลไกการลำเลียงถุงเก็บสารสื่อประสาทจากตัวเซลล์ไปยังปลายประสาท (Anterograde transport) ด้วยความเร็ว 0.5–1.5 ซม./ชม.",
+              icon: "dna"
+            },
+            {
+              id: "s1",
+              short: "ดร.ธาม",
+              name: "ดร.ธาม",
+              meta: "175 ซม. • ถนัดขวา",
+              desc: "ศึกษาโปรตีนตัวรับแคลเซียม Synaptotagmin และกลุ่มโปรตีน SNARE (VAMP, Syntaxin, SNAP-25) ในกระบวนการ Exocytosis",
+              icon: "bolt"
+            },
+            {
+              id: "s2",
+              short: "ศ.ดร.อคิน",
+              name: "ศ.ดร.อคิน",
+              meta: "182 ซม. • ถนัดซ้าย",
+              desc: "ศึกษากลไกการลำเลียงโปรตีนที่ใช้แล้วจากปลายประสาทย้อนกลับเข้าสู่ตัวเซลล์ (Retrograde axoplasmic transport)",
+              icon: "brain"
+            }
+          ],
+          weapons: [
+            {
+              id: "w0",
+              short: "Substance P",
+              name: "หลอดตัวอย่าง Substance P",
+              meta: "Neuropeptide • น้ำหนักปานกลาง",
+              desc: "บรรจุในถุงขนาดใหญ่ (Dense-core vesicles) ออกฤทธิ์ช้าแต่ยาวนาน ไม่มีกลไก Reuptake ทำหน้าที่ส่งสัญญาณความเจ็บปวด",
+              icon: "peptide"
+            },
+            {
+              id: "w1",
+              short: "ชุดสร้าง NO",
+              name: "ชุดสังเคราะห์ไนตริกออกไซด์ (NO)",
+              meta: "Gaseous (Unconventional) • น้ำหนักเบา",
+              desc: "ไม่เก็บในถุงเวสิเคิล แพร่ผ่านเยื่อหุ้มเซลล์ได้อิสระ ทำหน้าที่เป็น Retrograde messenger ย้อนกลับไปเซลล์ต้นทาง",
+              icon: "gas"
+            },
+            {
+              id: "w2",
+              short: "หลอด GABA",
+              name: "หลอดตัวอย่าง GABA",
+              meta: "Small-molecule • น้ำหนักเบา",
+              desc: "สารสื่อประสาทยับยั้งหลักในสมอง เก็บในถุง Synaptic vesicles ขนาดเล็ก ออกฤทธิ์ผ่านตัวรับ GABA-A และ GABA-B",
+              icon: "vesicle"
+            }
+          ],
+          locations: [
+            {
+              id: "l0",
+              short: "Soma Suite",
+              name: "ห้องวิเคราะห์ตัวเซลล์ประสาท (Soma Suite)",
+              meta: "ในร่ม",
+              desc: "ติดตั้งเครื่องตรวจวัดเอนไซม์ตัดแต่งโปรตีน Prohormone convertase (PC1/PC2), CPE และเอนไซม์ PAM",
+              icon: "somaLab"
+            },
+            {
+              id: "l1",
+              short: "แล็บภูมิคุ้มกัน",
+              name: "ห้องเพาะเลี้ยงเซลล์ภูมิคุ้มกันและหลอดเลือด",
+              meta: "ในร่ม",
+              desc: "กำลังทดลองเติมไซโตไคน์ (TNF-α, IL-1β, IFN-γ) เพื่อกระตุ้นการแสดงออกของเอนไซม์ระดับยีนเมื่อเกิดการอักเสบ",
+              icon: "petri"
+            },
+            {
+              id: "l2",
+              short: "ลานไนโตรเจน",
+              name: "ลานรับส่งถังไนโตรเจนเหลว",
+              meta: "กลางแจ้ง",
+              desc: "จุดขนถ่ายตัวอย่างชีวภาพกลางแจ้งด้านหลังอาคาร มีลมโกรกตลอดเวลา",
+              icon: "cryoDock"
+            }
+          ],
+          clues: [
+            {
+              text: "ผู้เชี่ยวชาญที่ทำงานวิจัยเกี่ยวกับมอเตอร์โปรตีน Kinesin (ดูของกลาง A ประกอบ) เป็นผู้ถือครองหลอดตัวอย่างสารสื่อประสาทที่สังเคราะห์จากกลูตาเมตโดยใช้เอนไซม์ซึ่งต้องการ Pyridoxal phosphate (วิตามิน B6) เป็นโคแฟกเตอร์",
+              isClimax: false,
+              hint: "เบาะแสที่ 1: จาก 'ของกลาง A' มอเตอร์โปรตีน Kinesin ทำหน้าที่ขนส่งแบบ Anterograde (= นักวิจัยเรณู) ส่วนสารที่สังเคราะห์จาก Glutamate โดยอาศัยวิตามิน B6 คือ GABA จึงใส่ ✓ ที่ช่อง (นักวิจัยเรณู × หลอดตัวอย่าง GABA)"
+            },
+            {
+              text: "ศ.ดร.อคิน เคยเขียนบทความวิจารณ์ผู้ที่ครอบครองชุดสังเคราะห์สารสื่อประสาทซึ่งใช้เอนไซม์เปลี่ยนกรดอะมิโน L-arginine ร่วมกับ O₂ และ NADPH ให้กลายเป็น L-citrulline",
+              isClimax: false,
+              hint: "เบาะแสที่ 2: ปฏิกิริยาเปลี่ยน L-arginine + O₂ + NADPH ได้ L-citrulline คือการสังเคราะห์ไนตริกออกไซด์ (NO) ศ.ดร.อคิน วิจารณ์ผู้ถือสารนี้ แปลว่าเป็นคนละคนกัน จึงใส่ ✕ ที่ช่อง (ศ.ดร.อคิน × ชุดสังเคราะห์ NO) ซึ่งจะทำให้รู้ทันทีว่าใครถือ NO และใครถือ Substance P!"
+            },
+            {
+              text: "หลอดตัวอย่างสารสื่อประสาทยับยั้งที่สังเคราะห์จาก Glutamate ไม่ได้ถูกนำไปไว้ในห้องที่มีการตรวจวัดเอนไซม์ที่ทำหน้าที่เติมหมู่เอไมด์ (Amidation) ที่ปลาย C-terminal เพื่อเพิ่มความเสถียรของเพปไทด์",
+              isClimax: false,
+              hint: "เบาะแสที่ 3: สารยับยั้งที่สร้างจาก Glutamate คือ GABA และเอนไซม์เติมหมู่เอไมด์ที่ปลาย C-terminal คือ PAM ซึ่งอยู่ในห้อง Soma Suite ดังนั้นใส่ ✕ ที่ช่อง (หลอดตัวอย่าง GABA × Soma Suite) และเนื่องจากนักวิจัยเรณูถือ GABA เรณูจึงไม่ได้อยู่ที่ Soma Suite ด้วย!"
+            },
+            {
+              text: "ถ้าไม่ใช่ นักวิจัยเรณู ที่อยู่ในห้องซึ่งตรวจวัดเอนไซม์ PC1 และ PC2 ก็ต้องเป็น ดร.ธาม ที่อยู่ในห้องซึ่งกำลังทดลองกระตุ้นการสร้างเอนไซม์ไอโซฟอร์ม iNOS (NOS2) อย่างใดอย่างหนึ่งเท่านั้น",
+              isClimax: false,
+              hint: "เบาะแสที่ 4 (ตรรกะเลือกอย่างใดอย่างหนึ่ง): จากเบาะแสก่อนหน้า นักวิจัยเรณูไม่ได้อยู่ใน Soma Suite (ห้องตรวจ PC1/PC2) ประโยคส่วนแรกจึงเป็นเท็จ! บังคับให้ประโยคส่วนหลังต้องเป็นจริง นั่นคือ ดร.ธาม อยู่ในห้องกระตุ้น iNOS ด้วยไซโตไคน์ (= ห้องเพาะเลี้ยงเซลล์ภูมิคุ้มกันฯ)"
+            },
+            {
+              text: "ตรวจพบร่องรอยการลักลอบเปิดหลอดทดลองในห้องที่ศึกษากระบวนการตัด Signal peptide ออกจาก Pre-propeptide ภายใน RER ก่อนบรรจุลงถุงเพื่อส่งต่อไปยัง Golgi!",
+              isClimax: true,
+              hint: "เบาะแสที่ 5 (ชี้จุดเกิดเหตุ): การสังเคราะห์และตัด Signal peptide ของ Neuropeptides เกิดขึ้นเฉพาะที่ตัวเซลล์ประสาท (Cell soma) นั่นคือ ห้องวิเคราะห์ตัวเซลล์ประสาท (Soma Suite) ดูในตารางว่าใครและของกลางใดอยู่ที่ห้องนี้!"
+            }
+          ],
+          solution: {
+            wOfS: [2, 1, 0],
+            lOfS: [2, 1, 0],
+            culpritSuspect: "s2",
+            culpritWeapon: "w0",
+            culpritLocation: "l0",
+            explanation: [
+              "Kinesin ทำหน้าที่ขนส่งแบบ Anterograde (= นักวิจัยเรณู) ถือสารที่สร้างจาก Glutamate โดยใช้วิตามิน B6 (= หลอดตัวอย่าง GABA)",
+              "ศ.ดร.อคิน ไม่ได้ถือชุดสังเคราะห์ NO (ที่เปลี่ยน L-arginine เป็น NO + L-citrulline) → บังคับให้ ดร.ธาม ถือชุดสังเคราะห์ NO และ ศ.ดร.อคิน ถือหลอดตัวอย่าง Substance P",
+              "GABA ไม่ได้อยู่ในห้องที่มีเอนไซม์ PAM เติมหมู่เอไมด์ (= Soma Suite) → นักวิจัยเรณูจึงไม่ได้อยู่ที่ Soma Suite",
+              "จากเงื่อนไข 'ถ้าไม่ใช่...ก็ต้องเป็น' เมื่อเรณูไม่ได้อยู่ที่ Soma Suite จึงบังคับให้ ดร.ธาม ต้องอยู่ที่ห้องเพาะเลี้ยงเซลล์ภูมิคุ้มกันฯ (กระตุ้น iNOS ด้วยไซโตไคน์) ส่งผลให้ นักวิจัยเรณู อยู่ที่ลานรับส่งถังไนโตรเจนเหลว และ ศ.ดร.อคิน อยู่ที่ Soma Suite",
+              "ร่องรอยการตัด Signal peptide ออกจาก Pre-propeptide ใน RER เกิดขึ้นที่ตัวเซลล์ประสาท (Soma Suite) ดังนั้นผู้ก่อเหตุคือ ศ.ดร.อคิน ของกลางคือ หลอดตัวอย่าง Substance P ณ ห้องวิเคราะห์ตัวเซลล์ประสาท (Soma Suite)"
+            ]
+          }
+        }
+      ];
+
+      // State per case so switching tabs preserves player progress
+      const appState = {
+        activeCaseIdx: 0,
+        entityFilter: "all",
+        stampMode: "cycle", // "cycle" | "x" | "v"
+        autoCross: true,
+        casesProgress: CASES.map(() => ({
+          grid: createEmptyGrid(),
+          hintIndex: -1,
+          accusation: { suspect: "", weapon: "", location: "" }
+        }))
+      };
+
+      function createEmptyGrid() {
+        const make3x3 = () =>
+          Array.from({ length: 3 }, () =>
+            Array.from({ length: 3 }, () => ({ val: "", auto: false }))
+          );
+        return {
+          SW: make3x3(), // [w][s]
+          LW: make3x3(), // [w][l]
+          SL: make3x3()  // [l][s]
+        };
+      }
+
+      // DOM Elements
+      const caseTabs = document.querySelectorAll(".case-tab");
+      const subTabs = document.querySelectorAll(".sub-tab");
+      const modeBtns = document.querySelectorAll(".tool-btn[data-mode]");
+      const chkAutoCross = document.getElementById("chk-auto-cross");
+      const entitiesContainer = document.getElementById("entities-container");
+      const cluesList = document.getElementById("clues-list");
+      const hintBox = document.getElementById("hint-box");
+      const hintTitle = document.getElementById("hint-title");
+      const hintBody = document.getElementById("hint-body");
+      const gridTable = document.getElementById("deduction-grid");
+      const gridReadout = document.getElementById("grid-readout");
+      const selSuspect = document.getElementById("sel-suspect");
+      const selWeapon = document.getElementById("sel-weapon");
+      const selLocation = document.getElementById("sel-location");
+      const resultBox = document.getElementById("result-box");
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function getCurrentCase() {
+        return CASES[appState.activeCaseIdx];
+      }
+
+      function getCurrentProgress() {
+        return appState.casesProgress[appState.activeCaseIdx];
+      }
+
+      // Render Case Header, Cards, Clues, Grid, Accusation Form
+      function renderAll() {
+        const c = getCurrentCase();
+        const prog = getCurrentProgress();
+
+        caseTabs.forEach((btn, idx) => {
+          btn.setAttribute("aria-selected", idx === appState.activeCaseIdx ? "true" : "false");
+        });
+
+        document.getElementById("case-level-tag").textContent = c.levelTag;
+        document.getElementById("case-topic-text").textContent = c.topic;
+        document.getElementById("case-title").textContent = c.title;
+        document.getElementById("case-story").textContent = c.story;
+
+        document.getElementById("lbl-suspect").textContent = c.labels.accuseSuspect;
+        document.getElementById("lbl-weapon").textContent = c.labels.accuseWeapon;
+        document.getElementById("lbl-location").textContent = c.labels.accuseLocation;
+
+        renderEntities();
+        renderClues();
+        renderGrid();
+        renderAccusationSelects();
+
+        resultBox.hidden = true;
+        resultBox.className = "feedback-box";
+        resultBox.innerHTML = "";
+
+        if (prog.hintIndex >= 0) {
+          showHintAtIndex(prog.hintIndex);
+        } else {
+          hintBox.hidden = true;
+        }
+      }
+
+      function renderEntities() {
+        const c = getCurrentCase();
+        const f = appState.entityFilter;
+        let html = "";
+
+        if (f === "all" || f === "suspects") {
+          html += '<div class="entity-group">';
+          html += '<div class="entity-group-label">ผู้ต้องสงสัย (Suspects)</div>';
+          html += '<div class="entity-cards-stack">';
+          c.suspects.forEach((s) => {
+            html += `
+              <article class="suspect-card">
+                <div class="entity-stamp" aria-hidden="true">${ICONS[s.icon]}</div>
+                <div class="suspect-body">
+                  <div class="entity-name">${escapeHtml(s.name)}</div>
+                  <div class="entity-meta">${escapeHtml(s.meta)}</div>
+                  <p class="entity-desc">${escapeHtml(s.desc)}</p>
+                </div>
+              </article>
+            `;
+          });
+          html += "</div></div>";
+        }
+
+        if (f === "all" || f === "weapons") {
+          html += '<div class="entity-group">';
+          html += `<div class="entity-group-label">${escapeHtml(c.labels.weaponsGroup)}</div>`;
+          html += '<div class="entity-cards-grid">';
+          c.weapons.forEach((w) => {
+            html += `
+              <article class="mini-entity-card">
+                <div class="entity-stamp" aria-hidden="true">${ICONS[w.icon]}</div>
+                <div class="entity-name">${escapeHtml(w.name)}</div>
+                <div class="entity-meta">${escapeHtml(w.meta)}</div>
+                <p class="entity-desc">${escapeHtml(w.desc)}</p>
+              </article>
+            `;
+          });
+          html += "</div></div>";
+        }
+
+        if (f === "all" || f === "locations") {
+          html += '<div class="entity-group">';
+          html += '<div class="entity-group-label">สถานที่ (Locations)</div>';
+          html += '<div class="entity-cards-grid">';
+          c.locations.forEach((l) => {
+            html += `
+              <article class="mini-entity-card">
+                <div class="entity-stamp" aria-hidden="true">${ICONS[l.icon]}</div>
+                <div class="entity-name">${escapeHtml(l.name)}</div>
+                <div class="entity-meta">${escapeHtml(l.meta)}</div>
+                <p class="entity-desc">${escapeHtml(l.desc)}</p>
+              </article>
+            `;
+          });
+          html += "</div></div>";
+        }
+
+        entitiesContainer.innerHTML = html;
+      }
+
+      function renderClues() {
+        const c = getCurrentCase();
+        const prog = getCurrentProgress();
+        cluesList.innerHTML = c.clues
+          .map((clue, idx) => {
+            const cls = [
+              "clue-item",
+              clue.isClimax ? "climax-clue" : "",
+              prog.hintIndex === idx ? "hint-active" : ""
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return `
+              <li class="${cls}">
+                <span class="clue-num" aria-hidden="true">${idx + 1}</span>
+                <p class="clue-text">${escapeHtml(clue.text)}</p>
+              </li>
+            `;
+          })
+          .join("");
+      }
+
+      function findSubgridConflicts(subgrid) {
+        const conflicts = Array.from({ length: 3 }, () => [false, false, false]);
+        for (let r = 0; r < 3; r++) {
+          const vCols = [];
+          for (let c = 0; c < 3; c++) {
+            if (subgrid[r][c].val === "v") vCols.push(c);
+          }
+          if (vCols.length > 1) {
+            vCols.forEach((c) => { conflicts[r][c] = true; });
+          }
+        }
+        for (let c = 0; c < 3; c++) {
+          const vRows = [];
+          for (let r = 0; r < 3; r++) {
+            if (subgrid[r][c].val === "v") vRows.push(r);
+          }
+          if (vRows.length > 1) {
+            vRows.forEach((r) => { conflicts[r][c] = true; });
+          }
+        }
+        return conflicts;
+      }
+
+      function renderGrid() {
+        const c = getCurrentCase();
+        const prog = getCurrentProgress();
+        const g = prog.grid;
+
+        const confSW = findSubgridConflicts(g.SW);
+        const confLW = findSubgridConflicts(g.LW);
+        const confSL = findSubgridConflicts(g.SL);
+
+        let html = "";
+
+        // Super column axis labels
+        html += `
+          <thead>
+            <tr>
+              <th class="empty-quadrant" colspan="2"></th>
+              <th class="axis-super-top" colspan="3">SUSPECTS (ผู้ต้องสงสัย)</th>
+              <th class="axis-super-top" colspan="3">LOCATIONS (สถานที่)</th>
+            </tr>
+            <tr>
+              <th class="empty-quadrant" colspan="2"></th>
+        `;
+
+        c.suspects.forEach((s, sIdx) => {
+          html += `
+            <th class="col-icon-th" data-col-key="S-${sIdx}" scope="col">
+              <button type="button" class="header-mini-btn" title="${escapeHtml(s.name)} (${escapeHtml(s.meta)})" data-inspect="ผู้ต้องสงสัย: ${escapeHtml(s.name)} — ${escapeHtml(s.meta)}">
+                ${ICONS[s.icon]}
+                <span class="header-short-label">${escapeHtml(s.short)}</span>
+              </button>
+            </th>
+          `;
+        });
+
+        c.locations.forEach((l, lIdx) => {
+          html += `
+            <th class="col-icon-th" data-col-key="L-${lIdx}" scope="col">
+              <button type="button" class="header-mini-btn" title="${escapeHtml(l.name)} (${escapeHtml(l.meta)})" data-inspect="สถานที่: ${escapeHtml(l.name)} — ${escapeHtml(l.meta)}">
+                ${ICONS[l.icon]}
+                <span class="header-short-label">${escapeHtml(l.short)}</span>
+              </button>
+            </th>
+          `;
+        });
+
+        html += "</tr></thead><tbody>";
+
+        // Rows 0..2: Weapons across Suspects (SW) & Locations (LW)
+        c.weapons.forEach((w, wIdx) => {
+          html += "<tr>";
+          if (wIdx === 0) {
+            html += '<th class="axis-super-left" rowspan="3">AGENTS (ของกลาง)</th>';
+          }
+          html += `
+            <th class="row-icon-th" data-row-key="W-${wIdx}" scope="row">
+              <button type="button" class="header-mini-btn" title="${escapeHtml(w.name)} (${escapeHtml(w.meta)})" data-inspect="ของกลาง: ${escapeHtml(w.name)} — ${escapeHtml(w.meta)}">
+                ${ICONS[w.icon]}
+                <span class="header-short-label">${escapeHtml(w.short)}</span>
+              </button>
+            </th>
+          `;
+
+          // SW cells
+          for (let sIdx = 0; sIdx < 3; sIdx++) {
+            html += buildCellHtml("SW", wIdx, sIdx, g.SW[wIdx][sIdx], confSW[wIdx][sIdx], `W-${wIdx}`, `S-${sIdx}`, `${c.suspects[sIdx].name} × ${w.name}`);
+          }
+          // LW cells
+          for (let lIdx = 0; lIdx < 3; lIdx++) {
+            html += buildCellHtml("LW", wIdx, lIdx, g.LW[wIdx][lIdx], confLW[wIdx][lIdx], `W-${wIdx}`, `L-${lIdx}`, `${c.locations[lIdx].name} × ${w.name}`);
+          }
+
+          html += "</tr>";
+        });
+
+        // Rows 3..5: Locations across Suspects (SL) only (L-shape!)
+        c.locations.forEach((l, lIdx) => {
+          html += "<tr>";
+          if (lIdx === 0) {
+            html += '<th class="axis-super-left" rowspan="3">LOCATIONS (สถานที่)</th>';
+          }
+          html += `
+            <th class="row-icon-th" data-row-key="L-${lIdx}" scope="row">
+              <button type="button" class="header-mini-btn" title="${escapeHtml(l.name)} (${escapeHtml(l.meta)})" data-inspect="สถานที่: ${escapeHtml(l.name)} — ${escapeHtml(l.meta)}">
+                ${ICONS[l.icon]}
+                <span class="header-short-label">${escapeHtml(l.short)}</span>
+              </button>
+            </th>
+          `;
+
+          for (let sIdx = 0; sIdx < 3; sIdx++) {
+            html += buildCellHtml("SL", lIdx, sIdx, g.SL[lIdx][sIdx], confSL[lIdx][sIdx], `L-${lIdx}`, `S-${sIdx}`, `${c.suspects[sIdx].name} × ${l.name}`);
+          }
+
+          html += '<td class="empty-quadrant" colspan="3"></td>';
+          html += "</tr>";
+        });
+
+        html += "</tbody>";
+        gridTable.innerHTML = html;
+      }
+
+      function buildCellHtml(sub, r, col, cellObj, isConflict, rowKey, colKey, pairLabel) {
+        const tdClasses = ["grid-cell-td"];
+        if (r === 0) tdClasses.push("thick-top");
+        if (r === 2) tdClasses.push("thick-bottom");
+        if (col === 0) tdClasses.push("thick-left");
+        if (col === 2) tdClasses.push("thick-right");
+
+        const btnClasses = ["grid-cell"];
+        let symbol = "";
+        let stateText = "ว่าง";
+        if (cellObj.val === "x") {
+          btnClasses.push("state-x");
+          if (cellObj.auto) btnClasses.push("is-auto");
+          symbol = "✕";
+          stateText = "เป็นไปไม่ได้ (✕)";
+        } else if (cellObj.val === "v") {
+          btnClasses.push("state-v");
+          symbol = "✓";
+          stateText = "ยืนยันคู่ตรงกัน (✓)";
+        }
+        if (isConflict) {
+          btnClasses.push("state-conflict");
+        }
+
+        return `
+          <td class="${tdClasses.join(" ")}">
+            <button
+              type="button"
+              class="${btnClasses.join(" ")}"
+              data-sub="${sub}"
+              data-r="${r}"
+              data-c="${col}"
+              data-row-key="${rowKey}"
+              data-col-key="${colKey}"
+              data-pair="${escapeHtml(pairLabel)}"
+              aria-label="${escapeHtml(pairLabel)}: ${stateText}"
+            >${symbol}</button>
+          </td>
+        `;
+      }
+
+      function applyCellAction(subName, r, c, forceVal) {
+        const prog = getCurrentProgress();
+        const sub = prog.grid[subName];
+        const cur = sub[r][c];
+
+        let nextVal = "";
+        if (typeof forceVal === "string") {
+          nextVal = cur.val === forceVal ? "" : forceVal;
+        } else if (appState.stampMode === "x") {
+          nextVal = cur.val === "x" ? "" : "x";
+        } else if (appState.stampMode === "v") {
+          nextVal = cur.val === "v" ? "" : "v";
+        } else {
+          // cycle: "" -> "x" -> "v" -> ""
+          if (cur.val === "") nextVal = "x";
+          else if (cur.val === "x") nextVal = "v";
+          else nextVal = "";
+        }
+
+        const wasV = cur.val === "v";
+        sub[r][c] = { val: nextVal, auto: false };
+
+        if (appState.autoCross) {
+          if (nextVal === "v") {
+            for (let i = 0; i < 3; i++) {
+              if (i !== c && sub[r][i].val === "") {
+                sub[r][i] = { val: "x", auto: true };
+              }
+              if (i !== r && sub[i][c].val === "") {
+                sub[i][c] = { val: "x", auto: true };
+              }
+            }
+          } else if (wasV && nextVal !== "v") {
+            cleanupOrphanAutoCrosses(sub);
+          }
+        }
+
+        renderGrid();
+      }
+
+      function cleanupOrphanAutoCrosses(sub) {
+        for (let r = 0; r < 3; r++) {
+          for (let c = 0; c < 3; c++) {
+            if (sub[r][c].val === "x" && sub[r][c].auto) {
+              let hasSupportingV = false;
+              for (let i = 0; i < 3; i++) {
+                if ((i !== c && sub[r][i].val === "v") || (i !== r && sub[i][c].val === "v")) {
+                  hasSupportingV = true;
+                  break;
+                }
+              }
+              if (!hasSupportingV) {
+                sub[r][c] = { val: "", auto: false };
+              }
+            }
+          }
+        }
+      }
+
+      function renderAccusationSelects() {
+        const c = getCurrentCase();
+        const prog = getCurrentProgress();
+
+        populateSelect(selSuspect, "-- เลือกผู้ต้องสงสัย --", c.suspects, prog.accusation.suspect);
+        populateSelect(selWeapon, "-- เลือกของกลาง --", c.weapons, prog.accusation.weapon);
+        populateSelect(selLocation, "-- เลือกสถานที่ --", c.locations, prog.accusation.location);
+      }
+
+      function populateSelect(selEl, placeholder, items, selectedId) {
+        let html = `<option value="">${escapeHtml(placeholder)}</option>`;
+        items.forEach((item) => {
+          const sel = item.id === selectedId ? " selected" : "";
+          html += `<option value="${escapeHtml(item.id)}"${sel}>${escapeHtml(item.name)}</option>`;
+        });
+        selEl.innerHTML = html;
+      }
+
+      function showHintAtIndex(idx) {
+        const c = getCurrentCase();
+        const clue = c.clues[idx];
+        hintTitle.textContent = `คำใบ้ช่วยวิเคราะห์ (${idx + 1}/${c.clues.length})`;
+        hintBody.textContent = clue.hint;
+        hintBox.hidden = false;
+        renderClues();
+      }
+
+      // Event Listeners: Case Tabs
+      caseTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const idx = Number(tab.dataset.caseIdx);
+          if (idx !== appState.activeCaseIdx) {
+            appState.activeCaseIdx = idx;
+            renderAll();
+          }
+        });
+      });
+
+      // Event Listeners: Entity Category Filter Tabs
+      subTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          appState.entityFilter = tab.dataset.filter;
+          subTabs.forEach((t) => t.setAttribute("aria-selected", t === tab ? "true" : "false"));
+          renderEntities();
+        });
+      });
+
+      // Event Listeners: Grid Toolbar
+      modeBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          appState.stampMode = btn.dataset.mode;
+          modeBtns.forEach((b) => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+        });
+      });
+
+      chkAutoCross.addEventListener("change", () => {
+        appState.autoCross = chkAutoCross.checked;
+      });
+
+      document.getElementById("btn-reset-grid").addEventListener("click", () => {
+        const prog = getCurrentProgress();
+        prog.grid = createEmptyGrid();
+        prog.hintIndex = -1;
+        hintBox.hidden = true;
+        resultBox.hidden = true;
+        renderClues();
+        renderGrid();
+      });
+
+      // Event Listeners: Step-by-Step Hint
+      document.getElementById("btn-step-hint").addEventListener("click", () => {
+        const c = getCurrentCase();
+        const prog = getCurrentProgress();
+        prog.hintIndex = (prog.hintIndex + 1) % c.clues.length;
+        showHintAtIndex(prog.hintIndex);
+      });
+
+      // Event Listeners: Interactive Grid Delegation
+      gridTable.addEventListener("click", (e) => {
+        const cellBtn = e.target.closest(".grid-cell");
+        if (cellBtn) {
+          const sub = cellBtn.dataset.sub;
+          const r = Number(cellBtn.dataset.r);
+          const c = Number(cellBtn.dataset.c);
+          const pair = cellBtn.dataset.pair;
+          applyCellAction(sub, r, c);
+          gridReadout.innerHTML = `<span>คู่ที่เลือก: <strong>${escapeHtml(pair)}</strong></span>`;
+          return;
+        }
+
+        const headerBtn = e.target.closest(".header-mini-btn");
+        if (headerBtn && headerBtn.dataset.inspect) {
+          gridReadout.innerHTML = `<span><strong>${escapeHtml(headerBtn.dataset.inspect)}</strong></span>`;
+        }
+      });
+
+      gridTable.addEventListener("contextmenu", (e) => {
+        const cellBtn = e.target.closest(".grid-cell");
+        if (cellBtn) {
+          e.preventDefault();
+          applyCellAction(cellBtn.dataset.sub, Number(cellBtn.dataset.r), Number(cellBtn.dataset.c), "v");
+        }
+      });
+
+      gridTable.addEventListener("mouseover", (e) => {
+        const cellBtn = e.target.closest(".grid-cell");
+        clearAxisHighlights();
+        if (cellBtn) {
+          const rKey = cellBtn.dataset.rowKey;
+          const cKey = cellBtn.dataset.colKey;
+          const rTh = gridTable.querySelector(`.row-icon-th[data-row-key="${rKey}"]`);
+          const cTh = gridTable.querySelector(`.col-icon-th[data-col-key="${cKey}"]`);
+          if (rTh) rTh.classList.add("axis-highlight");
+          if (cTh) cTh.classList.add("axis-highlight");
+          gridReadout.innerHTML = `<span>กำลังชี้ช่อง: <strong>${escapeHtml(cellBtn.dataset.pair)}</strong></span>`;
+        }
+      });
+
+      gridTable.addEventListener("mouseleave", () => {
+        clearAxisHighlights();
+      });
+
+      function clearAxisHighlights() {
+        gridTable.querySelectorAll(".axis-highlight").forEach((el) => el.classList.remove("axis-highlight"));
+      }
+
+      // Sync dropdown selections to state
+      selSuspect.addEventListener("change", () => {
+        getCurrentProgress().accusation.suspect = selSuspect.value;
+        // If user also wants quick fill from grid when choosing a suspect, keep manual control unless button pressed
+      });
+      selWeapon.addEventListener("change", () => {
+        getCurrentProgress().accusation.weapon = selWeapon.value;
+      });
+      selLocation.addEventListener("change", () => {
+        getCurrentProgress().accusation.location = selLocation.value;
+      });
+
+      // Autofill accusation from ✓ marks associated with selected suspect or location/weapon
+      document.getElementById("btn-autofill-from-grid").addEventListener("click", () => {
+        const c = getCurrentCase();
+        const prog = getCurrentProgress();
+        const g = prog.grid;
+
+        let sIdx = c.suspects.findIndex((s) => s.id === selSuspect.value);
+        const wIdxSelected = c.weapons.findIndex((w) => w.id === selWeapon.value);
+        const lIdxSelected = c.locations.findIndex((l) => l.id === selLocation.value);
+
+        // If suspect not chosen yet, try inferring from chosen weapon or location
+        if (sIdx === -1 && wIdxSelected !== -1) {
+          sIdx = [0, 1, 2].find((s) => g.SW[wIdxSelected][s].val === "v") ?? -1;
+        }
+        if (sIdx === -1 && lIdxSelected !== -1) {
+          sIdx = [0, 1, 2].find((s) => g.SL[lIdxSelected][s].val === "v") ?? -1;
+        }
+
+        if (sIdx !== -1) {
+          selSuspect.value = c.suspects[sIdx].id;
+          prog.accusation.suspect = selSuspect.value;
+
+          const matchedW = [0, 1, 2].find((w) => g.SW[w][sIdx].val === "v");
+          if (matchedW !== undefined) {
+            selWeapon.value = c.weapons[matchedW].id;
+            prog.accusation.weapon = selWeapon.value;
+          }
+
+          const matchedL = [0, 1, 2].find((l) => g.SL[l][sIdx].val === "v");
+          if (matchedL !== undefined) {
+            selLocation.value = c.locations[matchedL].id;
+            prog.accusation.location = selLocation.value;
+          }
+          gridReadout.innerHTML = `<span>ดึงคู่ที่ติ๊ก ✓ ของ <strong>${escapeHtml(c.suspects[sIdx].name)}</strong> ลงแบบฟอร์มแล้ว</span>`;
+        } else {
+          gridReadout.innerHTML = "<span>โปรดเลือกผู้ต้องสงสัย ของกลาง หรือสถานที่อย่างน้อย 1 ช่องที่มีเครื่องหมาย ✓ ในตารางก่อนดึงข้อมูล</span>";
+        }
+      });
+
+      // Submit & Verify Accusation
+      document.getElementById("accusation-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const c = getCurrentCase();
+        const sol = c.solution;
+        const sVal = selSuspect.value;
+        const wVal = selWeapon.value;
+        const lVal = selLocation.value;
+
+        if (!sVal || !wVal || !lVal) {
+          resultBox.hidden = false;
+          resultBox.className = "feedback-box is-incorrect";
+          resultBox.innerHTML = `
+            <div class="feedback-title">ข้อมูลสำนวนคดียังไม่ครบถ้วน</div>
+            <p>กรุณาเลือกผู้ต้องสงสัย ของกลาง และสถานที่ให้ครบทั้ง 3 ช่องก่อนส่งตรวจคำตอบ</p>
+          `;
+          return;
+        }
+
+        const isS = sVal === sol.culpritSuspect;
+        const isW = wVal === sol.culpritWeapon;
+        const isL = lVal === sol.culpritLocation;
+
+        if (isS && isW && isL) {
+          const stepsHtml = sol.explanation.map((step) => `<li>${escapeHtml(step)}</li>`).join("");
+          resultBox.hidden = false;
+          resultBox.className = "feedback-box is-correct";
+          resultBox.innerHTML = `
+            <div class="feedback-title">ไขคดีสำเร็จถูกต้องทุกประการ! (เกรด A+ จากอนุมานวิทยาลัย)</div>
+            <p>คุณเชื่อมโยงคุณสมบัติทางชีวเคมีของสารสื่อประสาทเข้ากับตารางอนุมานได้อย่างแม่นยำ</p>
+            <ol class="solution-steps">${stepsHtml}</ol>
+          `;
+        } else {
+          const correctCount = [isS, isW, isL].filter(Boolean).length;
+          resultBox.hidden = false;
+          resultBox.className = "feedback-box is-incorrect";
+          resultBox.innerHTML = `
+            <div class="feedback-title">ข้อสรุปยังไม่ตรงกับหลักฐานทางชีวเคมี (ถูกต้อง ${correctCount} จาก 3 ส่วน)</div>
+            <p>ลองตรวจสอบความเชื่อมโยงในตารางอนุมานอีกครั้ง หรือกดปุ่ม <strong>"ขอคำใบ้ทีละขั้น"</strong> และเปิดดู <strong>"ของกลาง A"</strong> ประกอบการวิเคราะห์</p>
+          `;
+        }
+      });
+
+      // Modals
+      function openModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.hidden = false;
+      }
+
+      function closeModal(id) {
+        const el = document.getElementById(id);
+        if (el) el.hidden = true;
+      }
+
+      document.getElementById("btn-open-exhibit").addEventListener("click", () => openModal("modal-exhibit"));
+      document.getElementById("btn-open-rules").addEventListener("click", () => openModal("modal-rules"));
+
+      document.querySelectorAll("[data-close-modal]").forEach((btn) => {
+        btn.addEventListener("click", () => closeModal(btn.dataset.closeModal));
+      });
+
+      document.querySelectorAll(".modal-backdrop").forEach((backdrop) => {
+        backdrop.addEventListener("click", (e) => {
+          if (e.target === backdrop) backdrop.hidden = true;
+        });
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeModal("modal-exhibit");
+          closeModal("modal-rules");
+        }
+      });
+
+      // Initial render
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
